@@ -1,0 +1,52 @@
+def getBondPrice(y, face, couponRate, m, ppy=1):
+    """
+    Calculate the price of a bond.
+    
+    Parameters:
+    y (float): Yield to maturity (YTM) as a decimal.
+    face (float): Face value of the bond.
+    couponRate (float): Annual coupon rate as a decimal.
+    m (int): Maturity in years.
+    ppy (int, optional): Payments per year. Default is 1.
+    
+    Returns:
+    float: The bond price.
+    """
+    coupon = face * couponRate / ppy
+    discountRate = y / ppy
+    periods = m * ppy
+    
+    pv_coupons = sum([coupon / (1 + discountRate) ** t for t in range(1, periods + 1)])
+    pv_face = face / (1 + discountRate) ** periods
+    
+    bondPrice = pv_coupons + pv_face
+    return bondPrice
+
+def getBondPrice_E(face, couponRate, m, yc):
+    """
+    Calculate the bond price using a term structure of interest rates.
+    
+    Parameters:
+    face (float): Face value of the bond.
+    couponRate (float): Annual coupon rate as a decimal.
+    m (int): Maturity in years.
+    yc (list of float): Yield curve (different rates for each year).
+    
+    Returns:
+    float: The bond price.
+    """
+    coupon = face * couponRate
+    
+    pvcf = sum([coupon / (1 + yc[t]) ** (t + 1) for t in range(m)])
+    pv_face = face / (1 + yc[-1]) ** m
+    
+    bondPrice = pvcf + pv_face
+    return bondPrice
+
+# Test values
+yc = [0.010, 0.015, 0.020, 0.025, 0.030]
+face = 2000000
+couponRate = 0.04
+m = 5
+
+print(getBondPrice_E(face, couponRate, m, yc))
