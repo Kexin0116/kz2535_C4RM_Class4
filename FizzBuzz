@@ -1,0 +1,18 @@
+def FizzBuzz(start, finish):
+    outlist = []
+    for i in range(start, finish + 1):
+        if i % 3 == 0 and i % 5 == 0:
+            outlist.append("fizzbuzz")
+        elif i % 3 == 0:
+            outlist.append("fizz")
+        elif i % 5 == 0:
+            outlist.append("buzz")
+        else:
+            outlist.append(str(i))
+    return outlist
+
+# Example usage
+start = 1
+finish = 15
+result = FizzBuzz(start, finish)
+print("\n".join(result))
